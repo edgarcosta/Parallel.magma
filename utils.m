@@ -9,14 +9,14 @@ end intrinsic;
 
 intrinsic MultiFork(n::RngIntElt) -> SeqEnum[RngIntElt], RngIntElt
   { Fork n copies of self and return the enumerator of self, and pids of the children }
-  parentpid := Getpid();
-  IsParent := func<|parentpid eq Getpid()>;
   res := [];
   for i in [1..n] do
-    if IsParent() then
-      Append(~res, Fork());
-      if not IsParent() then
-        return [], i;
+    if #res eq i - 1 then // only the parent gets inside of this loop
+      f := Fork();
+      if f ne 0 then // parent branch
+        Append(~res, f);
+      else
+        return [], i; // child branch
       end if;
     end if;
   end for;

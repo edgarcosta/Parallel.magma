@@ -1,18 +1,23 @@
-function Multifork(n)
-// Fork n copies of self and return the enumerator of self, and pids of the children
-  parentpid := Getpid();
-  IsParentProcess := func<|parentpid eq Getpid()>;
+function MultiFork(n)
   res := [];
   for i in [1..n] do
-    if IsParentProcess() then
-      Append(~res, Fork());
-      if not IsParentProcess() then
-        return [], i;
+    if #res eq i - 1 then // only the parent gets inside of this loop
+      f := Fork();
+      if f ne 0 then // parent branch
+        Append(~res, f);
+      else
+        return [], i; // child branch
       end if;
     end if;
   end for;
   return res, 0;
 end function;
 
-b, r := Multifork(10);
+b, r := MultiFork(10);
 print b, r;
+if r ne 0 then
+  exit 0;
+end if;
+// If you copy the text above to the interpreter, everything goes as expected
+// However, if you save this into a file and call magma on it, it you get some random errors
+// And, if you remove these 3 line comments, everything goes as expected
