@@ -1,1 +1,1 @@
-# MagmaParallel
+# Parallel.magma
