@@ -1,9 +1,7 @@
-Attach("multifork.m");
-procedure()
-  b, r := MultiFork(10);
-  print b, r;
-  if r ne 0 then
-    exit 0;
-  end if;
-  Sleep(1);
-end procedure();
+AttachSpec("spec");
+ns := [NextPrime(2^64-2^32*i)*NextPrime(2^64+2^32*i) : i in [1..10]];
+time p := function()
+  return ParallelCall(10, Factorization, [<n> : n in ns], 1);
+end function();
+time np := [Factorization(n) : n in ns];
+[p[i, 2, 1] eq elt : i->elt in np];

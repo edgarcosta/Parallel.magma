@@ -1,3 +1,5 @@
+freeze;
+
 // to allow f to be an UserProgram or Intrinsic
 // FIXME: this should be supported in kernel...
 function _Call(f, input, parameters, number_of_results)
