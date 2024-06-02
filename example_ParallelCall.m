@@ -1,4 +1,3 @@
-AttachSpec("spec");
 // we wrap the whole in a procedure to make sure
 // that is the file is read and closed before any forking
 jobs := StringToInteger(jobs);
