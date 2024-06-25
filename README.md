@@ -4,7 +4,7 @@
 ```
 # magma -b
 > jobs := 50;
-> // The block is necessary to prevent Magma to get a bit confused when forking
+> // The block is necessary to prevent Magma from getting confused when forking
 > foo := function ()
 >   ns := [NextPrime(2^64-2^32*i)*NextPrime(2^64+2^32*i) : i in [1..jobs]];
 >   time p := ParallelCall(jobs, Factorization, [<n> : n in ns], 1);
