@@ -2,6 +2,7 @@ freeze;
 
 // to allow f to be an UserProgram or Intrinsic
 function _ParallelCall(n, f, inputs, parameters, number_of_results)
+  n := Min(n, #inputs);
   if IsNone(parameters) then
     parameters := [<> : _ in inputs];
   end if;
