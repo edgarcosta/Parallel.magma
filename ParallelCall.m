@@ -17,9 +17,11 @@ function _ParallelCall(n, f, inputs, parameters, number_of_results)
   if index ne 0 then
     output := [* *];
     for i in [i : i in [1..#inputs] | i mod n eq index-1 ] do
+      start := Time();
       // this always succeeds
       b, out := Call(f, inputs[i],  number_of_results : Parameters:=parameters[i]);
-      Append(~output, <b, encode_none(out)>);
+      t := Time(start);
+      Append(~output, <b, encode_none(out), t>);
     end for;
     WriteObject(Open(filename(index), "w"), output);
     exit;
@@ -29,8 +31,8 @@ function _ParallelCall(n, f, inputs, parameters, number_of_results)
   for index in [1..n] do
     indices := [i : i in [1..#inputs] | i mod n eq index-1 ];
     for i->elt in ReadObject(Open(filename(index), "r")) do // should be a list of pairs
-      b, out := Explode(elt);
-      output[indices[i]] := <b, decode_none(out)>;
+      b, out, t := Explode(elt);
+      output[indices[i]] := <b, decode_none(out), t>;
     end for;
   end for;
   RemoveDirectory(tmpdir);
