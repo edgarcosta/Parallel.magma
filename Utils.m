@@ -6,12 +6,6 @@ intrinsic IsParentProcess() -> BoolElt
   return parentpid eq Getpid();
 end intrinsic;
 
-intrinsic ParallelFor(f::UserProgram, inputs::List, ncpus::RngIntElt, nout::RngIntElt) -> List
-{}
-  // r, i := MultiFork(ncpus);
-  return [* *];
-end intrinsic;
-
 intrinsic MkTemp(:Directory) -> MonStgElt
   { calls mktemp on Unix systems}
   cmd := "mktemp";
