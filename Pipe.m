@@ -13,7 +13,7 @@ intrinsic ParallelPipe(n::RngIntElt, C::SeqEnum[MonStgElt], S::SeqEnum[MonStgElt
 { Given a shell command lines in sequence C and parallel input strings in sequence S, create a pipe for each command C[i], send S[i] into the standard input of C[i], and finally return a sequence O such that O[i] has the output of command C[i] (all pipes are run in parallel using at most n threads) }
   require #C eq #S: "Lengths of sequence commands and arguments should be the same";
   try
-    Pipe("command -v parallel", "");
+    _ := Pipe("command -v parallel", "");
     PP := func<n, C, S|ParallelGNUPipe(n, C, S: RaiseError:=true)>;
   catch e
     PP := MagmaPipe;
