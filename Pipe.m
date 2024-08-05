@@ -21,6 +21,11 @@ intrinsic ParallelPipe(n::RngIntElt, C::SeqEnum[MonStgElt], S::SeqEnum[MonStgElt
   return PP(n, C, S);
 end intrinsic;
 
+intrinsic Pipe(n::RngIntElt, C::SeqEnum[MonStgElt], S::SeqEnum[MonStgElt]) -> SeqEnum[MonStgElt]
+{ " }//"
+  return ParallelPipe(n, C, S);
+end intrinsic;
+
 intrinsic ParallelGNUPipe(n::RngIntElt, C::SeqEnum[MonStgElt], S::SeqEnum[MonStgElt] : RaiseError:=false) -> SeqEnum[MonStgElt], SeqEnum[MonStgElt]
 { Given a shell command lines in sequence C and parallel input strings in sequence S, create a pipe for each command C[i], send S[i] into the standard input of C[i], and finally return sequences O and E such that O[i] (resp. E[i]) has the output (resp. error) of command C[i] (all pipes are run in parallel using at most n threads) }
   tmpdir := MkTemp(:Directory:=true);
