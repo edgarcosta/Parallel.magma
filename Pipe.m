@@ -31,6 +31,9 @@ intrinsic ParallelGNUPipe(n::RngIntElt, C::SeqEnum[MonStgElt], S::SeqEnum[MonStg
   tmpdir := MkTemp(:Directory:=true);
   input := [Sprintf("%o < %o/%o.in > %o/%o.out 2> %o/%o.err\n", c, tmpdir, i, tmpdir, i, tmpdir, i)  : i->c in C];
   inputfn := Sprintf("%o/parallel.input", tmpdir);
+  // we need work around columns nonsense
+  oldcol := GetColumns();
+  SetColumns(0);
   Write(inputfn, Join(input, ""));
   for i->s in S do
     Write(Sprintf("%o/%o.in", tmpdir, i), s);
@@ -42,6 +45,7 @@ intrinsic ParallelGNUPipe(n::RngIntElt, C::SeqEnum[MonStgElt], S::SeqEnum[MonStg
     success := false;
     msg := e;
   end try;
+  SetColumns(oldcol);
   output := [Read(Sprintf("%o/%o.out", tmpdir, i)) : i->_ in C];
   err := [Read(Sprintf("%o/%o.err", tmpdir, i)) : i->_ in C];
   RemoveDirectory(tmpdir);
