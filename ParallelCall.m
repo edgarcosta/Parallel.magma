@@ -39,22 +39,22 @@ function _ParallelCall(n, f, inputs, parameters, number_of_results)
   return output;
 end function;
 
-intrinsic ParallelCall(n::RngIntElt, f::UserProgram, inputs::SeqEnum[Tup], number_of_results::RngIntElt : Parameters:=None ) -> BoolElt, List
+intrinsic ParallelCall(n::RngIntElt, f::UserProgram, inputs::SeqEnum[Tup], number_of_results::RngIntElt : Parameters:=None ) -> List
   { Call f on the inputs expecting return_nvals distributed over n workers}
   return _ParallelCall(n, f, inputs, Parameters, number_of_results);
 end intrinsic;
 
-intrinsic ParallelCall(n::RngIntElt, f::UserProgram, inputs::List, number_of_results::RngIntElt : Parameters:=None ) -> BoolElt, List
+intrinsic ParallelCall(n::RngIntElt, f::UserProgram, inputs::List, number_of_results::RngIntElt : Parameters:=None ) -> List
   { " } //"
   return _ParallelCall(n, f, inputs, Parameters, number_of_results);
 end intrinsic;
 
-intrinsic ParallelCall(n::RngIntElt, f::Intrinsic, inputs::SeqEnum[Tup], number_of_results::RngIntElt : Parameters:=None ) -> BoolElt, List
+intrinsic ParallelCall(n::RngIntElt, f::Intrinsic, inputs::SeqEnum[Tup], number_of_results::RngIntElt : Parameters:=None ) -> List
   { " } //"
   return _ParallelCall(n, f, inputs, Parameters, number_of_results);
 end intrinsic;
 
-intrinsic ParallelCall(n::RngIntElt, f::Intrinsic, inputs::List, number_of_results::RngIntElt : Parameters:=None ) -> BoolElt, List
+intrinsic ParallelCall(n::RngIntElt, f::Intrinsic, inputs::List, number_of_results::RngIntElt : Parameters:=None ) -> List
   { " } //"
   return _ParallelCall(n, f, inputs, Parameters, number_of_results);
 end intrinsic;
