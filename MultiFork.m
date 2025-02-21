@@ -5,7 +5,7 @@ intrinsic MultiFork(n::RngIntElt) -> SeqEnum[RngIntElt], RngIntElt
   res := [];
   for i in [1..n] do
     if #res eq i - 1 then // only the parent gets inside of this loop
-      f := Fork();
+      f := Fork(:CloseStdin:=true);
       if f ne 0 then // parent branch
         Append(~res, f);
       else
