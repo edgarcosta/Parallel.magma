@@ -12,6 +12,8 @@ A Magma package for parallel execution of functions using process forking.
   - [MultiFork](#multifork)
   - [ParallelPipe / Pipe](#parallelpipe--pipe)
   - [ParallelGNUPipe](#parallelgnupipe)
+  - [IsParentProcess](#isparentprocess)
+  - [None Utilities](#none-utilities)
 - [Example](#example)
 - [Running Tests](#running-tests)
 - [License](#license)
@@ -121,6 +123,44 @@ ParallelGNUPipe(n::RngIntElt, C::SeqEnum[MonStgElt], S::SeqEnum[MonStgElt] : Rai
 ```
 
 Like `ParallelPipe` but uses GNU parallel (if available) and returns both stdout and stderr.
+
+### IsParentProcess
+
+```
+IsParentProcess() -> BoolElt
+```
+
+Returns `true` if the current process is the original parent process (not a forked child).
+
+```magma
+> IsParentProcess();
+true
+```
+
+### None Utilities
+
+The package provides a `None` type for representing missing or failed values, along with utilities for serialization.
+
+```
+IsNone(x::Any) -> BoolElt
+```
+
+Returns `true` if `x` is `None`.
+
+```
+EncodeNone(t) -> Any
+DecodeNone(t) -> Any
+```
+
+Encode/decode `None` values for serialization with `WriteObject`/`ReadObject`. Used internally by `ParallelCall` and `TimeoutCall` since `None` cannot be directly serialized.
+
+```magma
+> IsNone(None);
+true
+> success, output := Call(Factorization, <-1>, 1);  // fails
+> IsNone(output);
+true
+```
 
 ## Example
 

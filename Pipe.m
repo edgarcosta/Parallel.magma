@@ -1,3 +1,4 @@
+freeze;
 
 function MagmaPipe(n, C, S)
   out := [];
