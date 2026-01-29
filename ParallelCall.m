@@ -3,10 +3,6 @@ freeze;
 function _ParallelCall(n, f, inputs, parameters, number_of_results)
   n := Min(n, #inputs);
   parameters := IsNone(parameters) select [* <> : _ in inputs *] else parameters;
-  // work around the non serialization of None
-  none_str := Tempname("__NONE__");
-  encode_none := func<t| IsNone(t) select none_str else <IsNone(x) select none_str else x : x in t>>;
-  decode_none := func<t| t cmpeq none_str select None else <x cmpeq none_str select None else x : x in t>>;
 
   tmpdir := TemporaryDirectory();
   tempfiles := [Sprintf("%o/%o.out", tmpdir, i) : i in [1..n]];
@@ -18,7 +14,7 @@ function _ParallelCall(n, f, inputs, parameters, number_of_results)
       start := Time();
       b, out := Call(f, inputs[i], number_of_results : Parameters:=parameters[i]);
       t := Time(start);
-      Append(~output, <b, encode_none(out), t>);
+      Append(~output, <b, EncodeNone(out), t>);
     end for;
     WriteObject(Open(tempfiles[index], "w"), output);
     exit;
@@ -29,7 +25,7 @@ function _ParallelCall(n, f, inputs, parameters, number_of_results)
     indices := [i : i in [1..#inputs] | i mod n eq index-1 ];
     for i->elt in ReadObject(Open(tempfiles[index], "r")) do
       b, out, t := Explode(elt);
-      output[indices[i]] := <b, decode_none(out), t>;
+      output[indices[i]] := <b, DecodeNone(out), t>;
     end for;
   end for;
   Remove(tmpdir);
