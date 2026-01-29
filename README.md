@@ -32,12 +32,12 @@ AttachSpec("/path/to/Parallel.magma/spec");
 ### Call
 
 ```
-Call(f::Program, input::Tup, number_of_results::RngIntElt : Parameters:=[]) -> BoolElt, List
+Call(f::Program, input::Tup, number_of_results::RngIntElt : Parameters:=[]) -> BoolElt, Any
 ```
 
 Call a function `f` on the given `input` tuple, expecting `number_of_results` return values. This is a wrapper that handles both `UserProgram` and `Intrinsic` types uniformly.
 
-**Returns:** `(success, output)` where `success` is a boolean and `output` is a list of return values.
+**Returns:** `(success, output)` where `success` is a boolean and `output` is a list of return values (or `None` on failure).
 
 ```magma
 > success, output := Call(Factorization, <100>, 1);
@@ -67,12 +67,12 @@ Call function `f` on each input in `inputs` using up to `n` parallel workers.
 ### TimeoutCall
 
 ```
-TimeoutCall(timeout::RngIntElt, f::Program, input::Tup, number_of_results::RngIntElt : Parameters:=[], Buffer:=1) -> BoolElt, List, Any
+TimeoutCall(timeout::RngIntElt, f::Program, input::Tup, number_of_results::RngIntElt : Parameters:=[], Buffer:=1) -> BoolElt, Any, Any
 ```
 
 Call function `f` on `input` with a timeout in seconds. If the function doesn't complete within the timeout, it is killed.
 
-**Returns:** `(success, output, elapsed_time)` where `elapsed_time` is `-1.0` on timeout.
+**Returns:** `(success, output, elapsed_time)` where on timeout: `success` is `false`, `output` is `None`, and `elapsed_time` is `-1.0`.
 
 ```magma
 > // Function that completes in time
@@ -85,6 +85,8 @@ true
 > success, output, elapsed := TimeoutCall(1, slow, <42>, 1 : Buffer:=0);
 > success;
 false
+> IsNone(output);
+true
 > elapsed;
 -1.0
 ```

@@ -31,6 +31,6 @@ intrinsic TimeoutCall(timeout::RngIntElt, f::Program, input::Tup, number_of_resu
   else
     // Timeout or crash - empty output file
     Remove(outfile);
-    return false, [* *], -1.0;
+    return false, None, -1.0;
   end if;
 end intrinsic;

@@ -30,7 +30,7 @@ print "  PASSED";
 print "Test 2: Function times out";
 success, output, elapsed := TimeoutCall(1, slow_func, <5>, 1 : Buffer:=0);
 assert not success;
-assert #output eq 0;
+assert IsNone(output);
 assert elapsed eq -1.0;  // -1.0 indicates timeout
 print "  PASSED";
 
