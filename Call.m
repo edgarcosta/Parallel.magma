@@ -4,7 +4,7 @@ freeze;
 // FIXME: this should be supported in kernel...
 intrinsic Call(f::Program, input::Tup, number_of_results::RngIntElt : Parameters:=<> ) -> BoolElt, List
   { Call f on the input expecting return_nvals }
-  require number_of_results ge 0 : "The third argument must be non-negative";
+  require number_of_results ge 0 : "Argument 3 must be non-negative";
   tmp := f;
   input_string := Join([Sprintf("input[%o]", i) : i->_ in input], ", ");
   if #Parameters ge 1 then
