@@ -28,7 +28,7 @@ end intrinsic;
 
 intrinsic ParallelGNUPipe(n::RngIntElt, C::SeqEnum[MonStgElt], S::SeqEnum[MonStgElt] : RaiseError:=false) -> SeqEnum[MonStgElt], SeqEnum[MonStgElt]
 { Given a shell command lines in sequence C and parallel input strings in sequence S, create a pipe for each command C[i], send S[i] into the standard input of C[i], and finally return sequences O and E such that O[i] (resp. E[i]) has the output (resp. error) of command C[i] (all pipes are run in parallel using at most n threads) }
-  tmpdir := MkTemp(:Directory:=true);
+  tmpdir := TemporaryDirectory();
   input := [Sprintf("%o < %o/%o.in > %o/%o.out 2> %o/%o.err\n", c, tmpdir, i, tmpdir, i, tmpdir, i)  : i->c in C];
   inputfn := Sprintf("%o/parallel.input", tmpdir);
   // we need work around columns nonsense
@@ -48,7 +48,7 @@ intrinsic ParallelGNUPipe(n::RngIntElt, C::SeqEnum[MonStgElt], S::SeqEnum[MonStg
   SetColumns(oldcol);
   output := [Read(Sprintf("%o/%o.out", tmpdir, i)) : i->_ in C];
   err := [Read(Sprintf("%o/%o.err", tmpdir, i)) : i->_ in C];
-  RemoveDirectory(tmpdir);
+  Remove(tmpdir);
   if RaiseError and not success then
      error msg;
   end if;
