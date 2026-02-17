@@ -59,5 +59,23 @@ assert IsNone(recovered[2]);
 assert recovered[3] eq 42;
 print "  PASSED";
 
+// Test 8: EncodeNone/DecodeNone roundtrip across Fork
+print "Test 8: Roundtrip across Fork";
+original := <true, None, 42>;
+fn, F := TemporaryFile();
+delete F;
+child := _Fork(:CloseStdin:=true);
+if child eq 0 then
+  WriteObject(Open(fn, "w"), EncodeNone(original));
+  exit 0;
+end if;
+WaitForAllChildren();
+recovered := DecodeNone(ReadObject(Open(fn, "r")));
+Remove(fn);
+assert recovered[1] eq true;
+assert IsNone(recovered[2]);
+assert recovered[3] eq 42;
+print "  PASSED";
+
 print "";
 print "All tests passed!";

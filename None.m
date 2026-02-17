@@ -2,7 +2,7 @@ freeze;
 
 declare type None;
 
-// Generate a unique sentinel for serialization (once at load time)
+// Unique sentinel for serialization (generated once at load time)
 NONE_SENTINEL := Tempname("__MAGMA_NONE_SENTINEL__");
 
 intrinsic IsNone(x::Any) -> BoolElt

@@ -9,7 +9,7 @@ intrinsic TimeoutCall(timeout::RngIntElt, f::Program, input::Tup, number_of_resu
   outfile, F := TemporaryFile();
   delete F;  // close handle, we'll write from child
 
-  child := Fork(:CloseStdin:=true);
+  child := _Fork(:CloseStdin:=true);
   if child eq 0 then
     // Child process
     Alarm(timeout + Buffer);
